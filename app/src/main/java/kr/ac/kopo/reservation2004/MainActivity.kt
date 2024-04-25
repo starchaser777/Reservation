@@ -17,8 +17,8 @@ import android.widget.TimePicker
 
 class MainActivity : AppCompatActivity() {
     lateinit var chrono : Chronometer
-    lateinit var btnStart : Button
-    lateinit var btnDone : Button
+//    lateinit var btnStart : Button
+//    lateinit var btnDone : Button
     lateinit var rg : RadioGroup
     lateinit var datePick : DatePicker
     lateinit var timePick : TimePicker
@@ -32,24 +32,26 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         chrono = findViewById<Chronometer>(R.id.chrono)
-        btnStart = findViewById<Button>(R.id.btnStart)
-        btnDone = findViewById<Button>(R.id.btnDone)
+//        btnStart = findViewById<Button>(R.id.btnStart)
+//        btnDone = findViewById<Button>(R.id.btnDone)
         rg = findViewById<RadioGroup>(R.id.rg)
         datePick = findViewById<DatePicker>(R.id.datePick)
         timePick = findViewById<TimePicker>(R.id.timePick)
         textResult = findViewById<TextView>(R.id.textResult)
 
+        rg.visibility = View.INVISIBLE
         datePick.visibility = View.INVISIBLE
         timePick.visibility = View.INVISIBLE
 
-        rg.setOnCheckedChangeListener(rgListener)
-        btnStart.setOnClickListener {
+
+        chrono.setOnClickListener {
             chrono.base = SystemClock.elapsedRealtime()
             chrono.start()
+            rg.visibility = View.VISIBLE
             chrono.setTextColor(Color.MAGENTA)
         }
 
-        btnDone.setOnClickListener {
+        textResult.setOnLongClickListener {
             chrono.stop()
             chrono.setTextColor(Color.CYAN)
             selectedYear = datePick.year
@@ -59,8 +61,35 @@ class MainActivity : AppCompatActivity() {
             textResult.setText("" + selectedYear + "년 " + selectedMonth + "월 " + selectedDay + "일 ")
             textResult.append("" + timePick.currentHour + "시 ")
             textResult.append("" + timePick.currentMinute + "분")
+            textResult.append(" 예약 완료됨.")
+
+            rg.visibility = View.INVISIBLE
+            datePick.visibility = View.INVISIBLE
+            timePick.visibility = View.INVISIBLE
+
+            return@setOnLongClickListener true
         }
 
+        rg.setOnCheckedChangeListener(rgListener)
+
+//        btnStart.setOnClickListener {
+//            chrono.base = SystemClock.elapsedRealtime()
+//            chrono.start()
+//            chrono.setTextColor(Color.MAGENTA)
+//        }
+//
+//        btnDone.setOnClickListener {
+//            chrono.stop()
+//            chrono.setTextColor(Color.CYAN)
+//            selectedYear = datePick.year
+//            selectedMonth = datePick.month + 1
+//            selectedDay = datePick.dayOfMonth
+//
+//            textResult.setText("" + selectedYear + "년 " + selectedMonth + "월 " + selectedDay + "일 ")
+//            textResult.append("" + timePick.currentHour + "시 ")
+//            textResult.append("" + timePick.currentMinute + "분")
+//        }
+//
 //        calendar.setOnDateChangeListener { view, year, month, dayOfMonth ->
 //            selectedYear = year
 //            selectedMonth = month + 1
